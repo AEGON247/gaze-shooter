@@ -7,10 +7,35 @@
     <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
     <style>
         body { text-align: center; font-family: Arial, sans-serif; }
-        #grid { display: grid; grid-template-columns: repeat(5, 80px); gap: 10px; justify-content: center; margin-top: 50px; }
-        .letter { width: 80px; height: 80px; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 2px solid black; cursor: pointer; background: #f0f0f0; }
+        #grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 120px); /* More spacing between letters */
+            gap: 30px;  /* Increased gap */
+            justify-content: center; 
+            margin-top: 50px; 
+        }
+        .letter { 
+            width: 120px; 
+            height: 120px; 
+            font-size: 36px; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 3px solid black; 
+            cursor: pointer; 
+            background: #f0f0f0; 
+        }
         .highlight { background: yellow; }
-        #cursor { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; pointer-events: none; transition: transform 0.1s linear; }
+        #cursor { 
+            position: absolute; 
+            width: 15px; 
+            height: 15px; 
+            background: red; 
+            border-radius: 50%; 
+            pointer-events: none; 
+            transition: transform 0.1s linear; 
+        }
     </style>
 </head>
 <body>
@@ -28,7 +53,6 @@
         let gazeHistory = [];
         let selectedLetter = null;
         let blinkDetected = false;
-        let dwellStartTime = null;
 
         // Create Letter Grid
         letters.forEach(letter => {
@@ -49,20 +73,12 @@
 
                 cursor.style.transform = `translate(${avgX}px, ${avgY}px)`;
 
+                // Check which letter is being looked at
                 document.querySelectorAll(".letter").forEach(letterDiv => {
                     const rect = letterDiv.getBoundingClientRect();
                     if (avgX >= rect.left && avgX <= rect.right && avgY >= rect.top && avgY <= rect.bottom) {
-                        if (!selectedLetter || selectedLetter !== letterDiv.textContent) {
-                            dwellStartTime = Date.now(); // Start dwell timer
-                            selectedLetter = letterDiv.textContent;
-                        }
                         letterDiv.classList.add("highlight");
-
-                        // Check if gaze is stable for 0.8 seconds
-                        if (Date.now() - dwellStartTime >= 800) {
-                            speakLetter(selectedLetter);
-                            dwellStartTime = null;
-                        }
+                        selectedLetter = letterDiv.textContent; 
                     } else {
                         letterDiv.classList.remove("highlight");
                     }
@@ -70,12 +86,10 @@
             }
         }).begin();
 
-        // Blink Detection
+        // Blink Detection for Selection
         webgazer.setTracker('clmtrackr').setFaceMovementListener((data) => {
-            if (data.eyeClosure > 0.5) {
-                blinkDetected = true;
-            } else {
-                blinkDetected = false;
+            if (data.eyeClosure > 0.5 && selectedLetter) { // If blinking while looking at a letter
+                speakLetter(selectedLetter);
             }
         });
 
