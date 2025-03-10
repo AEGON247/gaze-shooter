@@ -4,23 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaze-Controlled Letter Selector</title>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/webgazer/2.0.1/webgazer.js"></script>
+    <script defer src="https://webgazer.cs.brown.edu/webgazer.js"></script>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: black;
-            overflow: hidden;
-            flex-direction: column;
             color: white;
+            overflow: hidden;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(6, 100px);
-            grid-gap: 50px; /* Increased spacing */
+            grid-template-columns: repeat(6, 120px);
+            grid-gap: 60px; /* Increased spacing */
             text-align: center;
         }
         .letter {
@@ -28,12 +27,14 @@
             font-weight: bold;
             padding: 20px;
             border: 2px solid white;
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
+        }
+        .highlight {
+            background-color: red; /* Highlight letter when gazed at */
         }
     </style>
 </head>
@@ -57,43 +58,45 @@
             grid.appendChild(div);
         });
 
-        // Start webgazer for eye tracking
+        // Start WebGazer for eye tracking
         webgazer.setGazeListener((data, elapsedTime) => {
             if (data) {
                 const x = data.x;
                 const y = data.y;
                 let hoveredElement = document.elementFromPoint(x, y);
                 
+                // Highlight the letter user is gazing at
+                document.querySelectorAll(".letter").forEach(el => el.classList.remove("highlight"));
                 if (hoveredElement && hoveredElement.classList.contains("letter")) {
+                    hoveredElement.classList.add("highlight");
                     selectedLetter = hoveredElement;
                 }
             }
         }).begin();
 
-        // Blink detection
+        // Blink detection using camera
+        webgazer.showPredictionPoints(true); // Helps visualize gaze tracking
         navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
             let video = document.createElement("video");
             video.srcObject = stream;
             video.play();
             document.body.appendChild(video);
             
-            let tracker = new tracking.ObjectTracker("eye");
-            tracker.setInitialScale(4);
-            tracker.setStepSize(2);
-            tracker.setEdgesDensity(0.1);
-            tracking.track(video, tracker);
+            let blinkCount = 0;
 
-            tracker.on("track", event => {
-                if (event.data.length === 0) {
-                    let now = new Date().getTime();
-                    if (now - lastBlinkTime > 800) { // Blink detection cooldown
-                        lastBlinkTime = now;
-                        if (selectedLetter) {
-                            speakLetter(selectedLetter.textContent);
+            setInterval(() => {
+                webgazer.getCurrentPrediction().then(prediction => {
+                    if (!prediction) {
+                        let now = new Date().getTime();
+                        if (now - lastBlinkTime > 1000) { // Blink cooldown
+                            lastBlinkTime = now;
+                            if (selectedLetter) {
+                                speakLetter(selectedLetter.textContent);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }, 500);
         }).catch(error => console.error("Camera access denied", error));
 
         // Speech synthesis function
