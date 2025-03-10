@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaze Shooter 👀🔫</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: black; 
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        canvas { display: block; }
+        #target {
+            width: 50px;
+            height: 50px;
+            background: red;
+            position: absolute;
+            border-radius: 50%;
+        }
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: cyan;
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+    </style>
+    <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+</head>
+<body>
+    <h2 align="center">Gaze Shooter - Aim with Your Eyes!</h2>
+    <p align="center">Hold gaze on red target to shoot.</p>
+
+    <div id="target"></div>
+    <div id="cursor"></div>
+
+    <script>
+        let target = document.getElementById("target");
+        let cursor = document.getElementById("cursor");
+        let shootTimer = null;
+        
+        function moveTarget() {
+            let x = Math.random() * (window.innerWidth - 50);
+            let y = Math.random() * (window.innerHeight - 50);
+            target.style.left = `${x}px`;
+            target.style.top = `${y}px`;
+        }
+
+        function startGazeTracking() {
+            webgazer.setGazeListener((data, timestamp) => {
+                if (data) {
+                    let x = data.x - 10;
+                    let y = data.y - 10;
+                    cursor.style.left = `${x}px`;
+                    cursor.style.top = `${y}px`;
+
+                    let targetRect = target.getBoundingClientRect();
+                    if (x >= targetRect.left && x <= targetRect.right && y >= targetRect.top && y <= targetRect.bottom) {
+                        if (!shootTimer) {
+                            shootTimer = setTimeout(() => {
+                                alert("🎯 Shot Fired! Target Eliminated!");
+                                moveTarget();
+                                shootTimer = null;
+                            }, 1500); // Hold gaze for 1.5 seconds to shoot
+                        }
+                    } else {
+                        clearTimeout(shootTimer);
+                        shootTimer = null;
+                    }
+                }
+            }).begin();
+        }
+
+        moveTarget();
+        startGazeTracking();
+    </script>
+</body>
+</html>
