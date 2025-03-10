@@ -3,80 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaze Shooter 👀🔫</title>
-    <style>
-        body { 
-            margin: 0; 
-            overflow: hidden; 
-            background-color: black; 
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        canvas { display: block; }
-        #target {
-            width: 50px;
-            height: 50px;
-            background: red;
-            position: absolute;
-            border-radius: 50%;
-        }
-        #cursor {
-            width: 20px;
-            height: 20px;
-            background: cyan;
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.7;
-        }
-    </style>
+    <title>Eye-Tracking Letter Selector</title>
     <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #grid { display: grid; grid-template-columns: repeat(5, 80px); gap: 10px; justify-content: center; margin-top: 50px; }
+        .letter { width: 80px; height: 80px; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 2px solid black; cursor: pointer; background: #f0f0f0; }
+        .highlight { background: yellow; }
+    </style>
 </head>
 <body>
-    <h2 align="center">Gaze Shooter - Aim with Your Eyes!</h2>
-    <p align="center">Hold gaze on red target to shoot.</p>
 
-    <div id="target"></div>
-    <div id="cursor"></div>
+    <h1>Eye-Tracking Letter Selector</h1>
+    <p>Look at a letter and blink to select it.</p>
+    
+    <div id="grid"></div>
 
     <script>
-        let target = document.getElementById("target");
-        let cursor = document.getElementById("cursor");
-        let shootTimer = null;
-        
-        function moveTarget() {
-            let x = Math.random() * (window.innerWidth - 50);
-            let y = Math.random() * (window.innerHeight - 50);
-            target.style.left = `${x}px`;
-            target.style.top = `${y}px`;
-        }
+        const grid = document.getElementById("grid");
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        let selectedLetter = null;
+        let blinkDetected = false;
 
-        function startGazeTracking() {
-            webgazer.setGazeListener((data, timestamp) => {
-                if (data) {
-                    let x = data.x - 10;
-                    let y = data.y - 10;
-                    cursor.style.left = `${x}px`;
-                    cursor.style.top = `${y}px`;
+        // Create Letter Grid
+        letters.forEach(letter => {
+            const div = document.createElement("div");
+            div.classList.add("letter");
+            div.textContent = letter;
+            grid.appendChild(div);
+        });
 
-                    let targetRect = target.getBoundingClientRect();
-                    if (x >= targetRect.left && x <= targetRect.right && y >= targetRect.top && y <= targetRect.bottom) {
-                        if (!shootTimer) {
-                            shootTimer = setTimeout(() => {
-                                alert("🎯 Shot Fired! Target Eliminated!");
-                                moveTarget();
-                                shootTimer = null;
-                            }, 1500); // Hold gaze for 1.5 seconds to shoot
-                        }
+        // Start WebGazer
+        webgazer.setGazeListener((data, elapsedTime) => {
+            if (data) {
+                let gazeX = data.x;
+                let gazeY = data.y;
+
+                document.querySelectorAll(".letter").forEach(letterDiv => {
+                    const rect = letterDiv.getBoundingClientRect();
+                    if (gazeX >= rect.left && gazeX <= rect.right && gazeY >= rect.top && gazeY <= rect.bottom) {
+                        letterDiv.classList.add("highlight");
+                        selectedLetter = letterDiv.textContent;
                     } else {
-                        clearTimeout(shootTimer);
-                        shootTimer = null;
+                        letterDiv.classList.remove("highlight");
                     }
-                }
-            }).begin();
-        }
+                });
+            }
+        }).begin();
 
-        moveTarget();
-        startGazeTracking();
+        // Blink Detection (Using Eye Closure)
+        webgazer.setTracker('clmtrackr').setFaceMovementListener((data) => {
+            if (data.eyeClosure > 0.5) { // Blink detected (higher values mean more closure)
+                if (!blinkDetected && selectedLetter) {
+                    blinkDetected = true;
+                    speakLetter(selectedLetter);
+                }
+            } else {
+                blinkDetected = false;
+            }
+        });
+
+        // Text-to-Speech Function
+        function speakLetter(letter) {
+            let speech = new SpeechSynthesisUtterance(letter);
+            speech.lang = "en-US";
+            window.speechSynthesis.speak(speech);
+        }
     </script>
+
 </body>
 </html>
