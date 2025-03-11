@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&display=swap');
+
+body {
+    background-color: black;
+    color: #33FF33;
+    font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+}
+
+.terminal pre {
+    font-size: 20px;
+    letter-spacing: 2px;
+    white-space: pre;
+    text-shadow: 0 0 10px #33FF33;
+}
+
+@keyframes matrix {
+    0% { background-color: black; color: limegreen; }
+    50% { background-color: darkgreen; color: black; }
+    100% { background-color: black; color: limegreen; }
+}
+
+.matrix {
+    animation: matrix 1s infinite alternate;
+}
+
+/* Matrix 2 - Falling Code Effect */
+.matrix-code {
+    position: absolute;
+    top: 0;
+    font-size: 20px;
+    color: limegreen;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+    from {
+        top: 0;
+        opacity: 1;
+    }
+    to {
+        top: 100vh;
+        opacity: 0;
+    }
+}
+
+/* Glitch Mode */
+@keyframes glitch {
+    0% { transform: skew(0deg); }
+    20% { transform: skew(-5deg); }
+    40% { transform: skew(5deg); }
+    60% { transform: skew(-10deg); }
+    80% { transform: skew(10deg); }
+    100% { transform: skew(0deg); }
+}
+
+.glitch {
+    animation: glitch 0.2s infinite;
+}

@@ -2,50 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const output = document.getElementById("output");
     const input = document.getElementById("terminal-input");
     let isMatrixMode = false;
-    let isMatrix2Running = false;
-    let matrixInterval;
-    
-    // Fake Bootup Sequence
-    function showBootSequence() {
-        const bootMessages = [
-            "Initializing system... ████░░░░░░░░ 45%",
-            "Decrypting secure files... ██████░░░░ 67%",
-            "Access granted! Welcome, Sachin.",
-            "",
-"   ██╗  ██╗ █████╗  ██████╗██   ██",
-"  ██║  ██║██╔══██╗██╔════╝██  ██", 
-" ███████║███████║██║     ██ ██",  
-"██╔══██║██╔══██║██║     ████",             
-"██║  ██║██║  ██║╚██████╗██ ██",
-"╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ██  ██",
-"                         ██   ██",
-"",
-"Type 'help' for available commands.",
-        ];
-
-        output.innerHTML = ""; // Clear previous content
-        let index = 0;
-        let charIndex = 0;
-        
-        function typeCharacter() {
-            if (index < bootMessages.length) {
-                if (charIndex < bootMessages[index].length) {
-                    output.innerHTML += bootMessages[index][charIndex];
-                    charIndex++;
-                    setTimeout(typeCharacter, 50); // Speed of typing effect
-                } else {
-                    output.innerHTML += "\n"; // Move to the next line after full message
-                    index++;
-                    charIndex = 0;
-                    setTimeout(typeCharacter, 500); // Delay before next message
-                }
-            }
-        }
-    
-        typeCharacter();
-    }
-
-    showBootSequence(); // Run the boot sequence on page load
 
     const commands = {
         help: `
@@ -56,9 +12,7 @@ Available commands:
 - contact: Get my contact details
 - home: Reload the site
 - ascii art: Display ASCII text
-- hack on: Activate Matrix hack animation
-- matrix: Start Matrix Falling Code
-- glitch mode: Trigger Glitch Effect
+- matrix mode: Activate Matrix animation
 - theme dark: Switch to dark theme
 - theme light: Switch to light theme
 - clear: Clear the terminal
@@ -93,7 +47,7 @@ LinkedIn: linkedin.com/in/sachin-mehta-785704272
 ██║  ██║ ███████╗╚██████╔╝╚██████╔╝██║ ╚████║
 ╚═╝  ╚═╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝
         `,
-        "hack on": function () {
+        "matrix mode": function () {
             if (!isMatrixMode) {
                 document.body.classList.add("matrix"); // Add matrix mode class
                 isMatrixMode = true;
@@ -101,21 +55,6 @@ LinkedIn: linkedin.com/in/sachin-mehta-785704272
                 document.body.classList.remove("matrix"); // Remove matrix mode class
                 isMatrixMode = false;
             }
-        },
-        "matrix": function () {
-            if (!isMatrix2Running) {
-                startMatrixEffect();
-                isMatrix2Running = true;
-            } else {
-                stopMatrixEffect();
-                isMatrix2Running = false;
-            }
-        },
-        "glitch mode": function () {
-            document.body.classList.add("glitch");
-            setTimeout(() => {
-                document.body.classList.remove("glitch");
-            }, 4000); // Glitch effect lasts 4 seconds
         },
         "theme dark": function () {
             document.body.style.backgroundColor = "black";
@@ -129,26 +68,26 @@ LinkedIn: linkedin.com/in/sachin-mehta-785704272
             output.innerHTML = ""; // Clear terminal
         },
 
-        // HIDDEN EASTER EGG COMMAND 🔥
-        "iamtheone": function () {
-            output.innerHTML += `
-            > iamtheone
-            You have unlocked THE ONE MODE. System Breach Initiated...
-            `;
-            document.body.style.backgroundColor = "black";
-            document.body.style.color = "red";
+    // HIDDEN EASTER EGG COMMAND 🔥
+    "iamtheone": function () {
+        output.innerHTML += `
+        > iamtheone
+        You have unlocked THE ONE MODE. System Breach Initiated...
+        `;
+        document.body.style.backgroundColor = "black";
+        document.body.style.color = "red";
 
-            // Play a hacking animation
-            let interval = setInterval(() => {
-                output.innerHTML += "\nACCESS GRANTED...";
-            }, 500);
+        // Play a hacking animation
+        let interval = setInterval(() => {
+            output.innerHTML += "\nACCESS GRANTED...";
+        }, 500);
 
-            setTimeout(() => {
-                clearInterval(interval);
-                output.innerHTML += "\nJust kidding. 😆 You've found the secret!";
-            }, 5000);
-        },
-    };
+        setTimeout(() => {
+            clearInterval(interval);
+            output.innerHTML += "\nJust kidding. 😆 You've found the secret!";
+        }, 5000);
+    },
+};
 
     function executeCommand(command) {
         command = command.toLowerCase().trim();
@@ -163,7 +102,8 @@ LinkedIn: linkedin.com/in/sachin-mehta-785704272
         } else {
             output.innerHTML += `> ${command}\nCommand not found. Type "help" for available commands.\n`;
         }
-
+        //output.scrollTop = output.scrollHeight;
+        // Smooth auto-scroll to latest command
         setTimeout(() => {
             output.scrollTo({
                 top: output.scrollHeight,
@@ -187,23 +127,3 @@ window.addEventListener("offline", () => {
 window.addEventListener("online", () => {
     output.innerHTML += "\n✅ You are back online!\n";
 });
-
-// MATRIX 2 - Falling Code Effect
-function startMatrixEffect() {
-    matrixInterval = setInterval(() => {
-        const matrixCode = document.createElement("div");
-        matrixCode.innerText = Math.random() > 0.5 ? "0" : "1";
-        matrixCode.classList.add("matrix-code");
-        matrixCode.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(matrixCode);
-
-        setTimeout(() => {
-            matrixCode.remove();
-        }, 3000);
-    }, 50);
-}
-
-function stopMatrixEffect() {
-    clearInterval(matrixInterval);
-    document.querySelectorAll(".matrix-code").forEach(el => el.remove());
-}
