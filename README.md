@@ -25,6 +25,10 @@ git clone https://github.com/AEGON247/terminal-portfolio.git
 2. **Open index.html in a Browser**
 3. **Start Typing Commands!**
 
+## Live Demo !!
+
+Go to https://gaze-shooter.vercel.app
+
 ## 🖥️ Usage Guide
 Type the following commands in the terminal:
 
@@ -38,12 +42,13 @@ Type the following commands in the terminal:
 | contact	    | Get my contact details                        |
 | theme dark	| Switch to dark hacker mode                    |
 | theme light	| Switch to light mode                          |
-| matrix mode	| Activate the falling code animation           |
+| matrix     	| Activate the falling code animation           |
 | ascii art	    | Show cool ASCII text                          |
 | home	        | Reload the site                               |
 | clear	        | Clear the terminal                            |
 | iamtheone	    | (Secret Easter Egg!) Activates a hacker mode  |
-
+| glitch mode   | Activates hacked glitching                    |
+| hack on	    | Activates hacked effect                       |
 
 ## 📟 Default Terminal Look
 
@@ -66,8 +71,3 @@ MIT License – Free to use and modify! 😊
 Feel free to fork, modify, and contribute! If you have cool new commands to add, submit a pull request.
 
 🔥 Hope you enjoy using it! Feel free to star the repo ⭐ 🚀
-
-### 💡 **Next Steps:**  
-- Add this **README.md** to your GitHub repo.
-- Make sure your GIFs are working (replace the GIF URLs if needed).
-- If you need **more features or tweaks**, just ask! 😎🔥
