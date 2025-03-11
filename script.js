@@ -40,12 +40,12 @@ GitHub: github.com/AEGON247
 LinkedIn: linkedin.com/in/sachin-mehta-785704272
         `,
         "ascii art": `
- █████╗ ███████╗ ██████╗  ██████╗ ███╗   ██╗
-██╔══██╗██╔════╝██╔════╝ ██╔═══██╗████╗  ██║
-███████║███████╗██║  ███╗██║   ██║██╔██╗ ██║
-██╔══██║╚════██║██║   ██║██║   ██║██║╚██╗██║
-██║  ██║███████║╚██████╔╝╚██████╔╝██║ ╚████║
-╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝
+ █████╗  ███████╗ ██████╗  ██████╗ ███╗   ██╗
+██╔══██╗ ██╔════╝██╔════╝ ██╔═══██╗████╗  ██║
+███████║ █████╗  ██║  ███╗██║   ██║██╔██╗ ██║
+██╔══██║ ██╔══╝  ██║   ██║██║   ██║██║╚██╗██║
+██║  ██║ ███████╗╚██████╔╝╚██████╔╝██║ ╚████║
+╚═╝  ╚═╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝
         `,
         "matrix mode": function () {
             if (!isMatrixMode) {
@@ -102,7 +102,14 @@ LinkedIn: linkedin.com/in/sachin-mehta-785704272
         } else {
             output.innerHTML += `> ${command}\nCommand not found. Type "help" for available commands.\n`;
         }
-        output.scrollTop = output.scrollHeight;
+        //output.scrollTop = output.scrollHeight;
+        // Smooth auto-scroll to latest command
+        setTimeout(() => {
+            output.scrollTo({
+                top: output.scrollHeight,
+                behavior: "smooth"
+            });
+        }, 50);
     }
 
     input.addEventListener("keydown", function (event) {
