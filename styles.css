@@ -2,7 +2,7 @@
 
 body {
     background-color: black;
-    color: #33FF33; /* Neon green */
+    color: #33FF33;
     font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
     display: flex;
     justify-content: center;
@@ -17,4 +17,14 @@ body {
     letter-spacing: 2px;
     white-space: pre;
     text-shadow: 0 0 10px #33FF33;
+}
+
+@keyframes matrix {
+    0% { background-color: black; color: limegreen; }
+    50% { background-color: darkgreen; color: black; }
+    100% { background-color: black; color: limegreen; }
+}
+
+.matrix {
+    animation: matrix 1s infinite alternate;
 }
