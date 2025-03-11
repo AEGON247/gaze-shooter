@@ -1,7 +1,7 @@
 # 🔰 Terminal Portfolio - AEGON247  
 🚀 A fully interactive, hacker-style terminal portfolio built with **HTML, CSS, and JavaScript**. Type commands to explore my projects, skills, and more.  
 
-![Terminal Demo](https://media.giphy.com/media/3o6ZsYm5R4oR4n4POY/giphy.gif)  
+![Terminal Demo](https://media0.giphy.com/media/zXmbOaTpbY6mA/giphy.gif?cid=6c09b952exv6gbwmbvmy4fl0f7jr7kj4xwyfg1i4texhmw7u&ep=v1_gifs_search&rid=giphy.gif&ct=g)  
 
 ---
 
@@ -44,14 +44,14 @@ Type the following commands in the terminal:
 | clear	        | Clear the terminal                            |
 | iamtheone	    | (Secret Easter Egg!) Activates a hacker mode  |
 
-# 📸 Screenshots
-# 📟 Default Terminal Look
 
-# 💻 Dark Theme
+## 📟 Default Terminal Look
 
-# 💾 Matrix Mode
+## 💻 Dark Theme
 
-# 🎭 Hidden Easter Egg
+## 💾 Matrix Mode
+
+## 🎭 Hidden Easter Egg
 
 ## 📜 License
 MIT License – Free to use and modify! 😊
