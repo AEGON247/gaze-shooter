@@ -3,113 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaze-Controlled Letter Selector</title>
-    <script src="https://webgazer.cs.brown.edu/webgazer.js"></script> <!-- FIXED -->
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
-            color: white;
-            overflow: hidden;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(6, 120px);
-            grid-gap: 60px; /* Increased spacing */
-            text-align: center;
-        }
-        .letter {
-            font-size: 32px;
-            font-weight: bold;
-            padding: 20px;
-            border: 2px solid white;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .highlight {
-            background-color: red; /* Highlight letter when gazed at */
-        }
-    </style>
+    <title>Hacker Terminal Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="terminal">
+        <pre id="output">
+            
+██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗
+██║  ██║██╔══██╗██╔════╝██║  ██║██╔════╝
+███████║███████║██║     ███████║█████╗ 
+██╔══██║██╔══██║██║     ██╔══██║██╔══╝   
+██║  ██║██║  ██║╚██████╗██║  ██║███████╗ 
+╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝
 
-    <h1>Gaze at a Letter & Blink to Select</h1>
-    <div class="grid" id="letterGrid"></div>
 
-    <script>
-        window.onload = function () { // Ensures WebGazer is fully loaded before running script
-            if (typeof webgazer === "undefined") {
-                console.error("WebGazer.js failed to load.");
-                return;
-            }
+ ███████╗ ██████╗  ██████╗ ███╗   ██╗
+ ██╔════╝██╔═══██╗██╔═══██╗████╗  ██║
+║███████╗██║   ██║██║   ██║██╔██╗ ██║
+╚════██║ ██║   ██║██║   ██║██║╚██╗██║
+║███████║╚██████╔╝╚██████╔╝██║ ╚████║
+╚══════╝  ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝
 
-            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            const grid = document.getElementById("letterGrid");
-            let selectedLetter = null;
-            let lastBlinkTime = 0;
 
-            // Create grid of letters
-            letters.forEach(letter => {
-                const div = document.createElement("div");
-                div.classList.add("letter");
-                div.textContent = letter;
-                div.id = `letter-${letter}`;
-                grid.appendChild(div);
-            });
-
-            // Start WebGazer for eye tracking
-            webgazer.setGazeListener((data, elapsedTime) => {
-                if (data) {
-                    const x = data.x;
-                    const y = data.y;
-                    let hoveredElement = document.elementFromPoint(x, y);
-                    
-                    // Highlight the letter user is gazing at
-                    document.querySelectorAll(".letter").forEach(el => el.classList.remove("highlight"));
-                    if (hoveredElement && hoveredElement.classList.contains("letter")) {
-                        hoveredElement.classList.add("highlight");
-                        selectedLetter = hoveredElement;
-                    }
-                }
-            }).begin();
-
-            // Blink detection using camera
-            webgazer.showPredictionPoints(true); // Helps visualize gaze tracking
-            navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-                let video = document.createElement("video");
-                video.srcObject = stream;
-                video.play();
-                document.body.appendChild(video);
-                
-                setInterval(() => {
-                    webgazer.getCurrentPrediction().then(prediction => {
-                        if (!prediction) {
-                            let now = new Date().getTime();
-                            if (now - lastBlinkTime > 1000) { // Blink cooldown
-                                lastBlinkTime = now;
-                                if (selectedLetter) {
-                                    speakLetter(selectedLetter.textContent);
-                                }
-                            }
-                        }
-                    });
-                }, 500);
-            }).catch(error => console.error("Camera access denied", error));
-
-            // Speech synthesis function
-            function speakLetter(letter) {
-                let msg = new SpeechSynthesisUtterance(letter);
-                window.speechSynthesis.speak(msg);
-            }
-        };
-    </script>
-
+Type "help" to see available commands
+---------------------------------------------------
+        </pre>
+        <div class="input-line">
+            <span class="prompt">> </span>
+            <input type="text" id="terminal-input" autofocus>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
