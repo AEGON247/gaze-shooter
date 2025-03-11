@@ -64,8 +64,30 @@ LinkedIn: linkedin.com/in/sachin-mehta-785704272
             document.body.style.backgroundColor = "white";
             document.body.style.color = "black";
         },
-        clear: "",
-    };
+        clear: function () {
+            output.innerHTML = ""; // Clear terminal
+        },
+
+    // HIDDEN EASTER EGG COMMAND 🔥
+    "iamtheone": function () {
+        output.innerHTML += `
+        > iamtheone
+        You have unlocked THE ONE MODE. System Breach Initiated...
+        `;
+        document.body.style.backgroundColor = "black";
+        document.body.style.color = "red";
+
+        // Play a hacking animation
+        let interval = setInterval(() => {
+            output.innerHTML += "\nACCESS GRANTED...";
+        }, 500);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            output.innerHTML += "\nJust kidding. 😆 You've found the secret!";
+        }, 5000);
+    },
+};
 
     function executeCommand(command) {
         command = command.toLowerCase().trim();
