@@ -28,7 +28,10 @@ git clone https://github.com/AEGON247/terminal-portfolio.git
 ## 🖥️ Usage Guide
 Type the following commands in the terminal:
 
-# Command Description
+## Command Description
+
+| Commands      | Details                                       |
+|---------------|-----------------------------------------------|
 | help	        | Show all available commands                   |
 | show projects	| View my latest projects                       |
 | show skills	| Display my tech stack                         |
