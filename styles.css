@@ -14,7 +14,7 @@ body {
 
 .terminal pre {
     font-size: 20px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     white-space: pre;
     text-shadow: 0 0 10px #33FF33;
 }
