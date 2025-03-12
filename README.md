@@ -1,4 +1,4 @@
-# 🔰 Terminal Portfolio - AEGON247  
+# 🔰 Hack BREW - AEGON247  
 🚀 A fully interactive, hacker-style terminal portfolio built with **HTML, CSS, and JavaScript**. Type commands to explore my projects, skills, and more.  
 
 ![Terminal Demo](https://media0.giphy.com/media/zXmbOaTpbY6mA/giphy.gif?cid=6c09b952exv6gbwmbvmy4fl0f7jr7kj4xwyfg1i4texhmw7u&ep=v1_gifs_search&rid=giphy.gif&ct=g)  
@@ -27,7 +27,7 @@ git clone https://github.com/AEGON247/terminal-portfolio.git
 
 ## Live Demo !!
 
-Go to https://gaze-shooter.vercel.app
+Go to https://hack-brew.vercel.app
 
 ## 🖥️ Usage Guide
 Type the following commands in the terminal:
